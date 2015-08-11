@@ -1,0 +1,111 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="baidu-tc-cerfication" content="1db58c6d57216d3def916f495cd46d1e" />
+<title>时间戳查询</title>
+<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+<script>
+	$(function(){
+		var t=new Date();
+		
+		//当前时间戳
+		var nowtime=t.getTime();						
+		var nowtime=""+nowtime+"";
+		var nowtime=nowtime.substr(0,10);
+		$("#time").val(nowtime);
+		
+		//当前日期时间
+		var ttime=t.toTimeString();
+		var ttime=""+ttime+"";
+		var ttime=ttime.substr(0,8);
+		var dtime=t.toLocaleDateString();		//2013年12月12日
+		var dtime=dtime.replace(/年/,"-");
+		var dtime=dtime.replace(/月/,"-");
+		var dtime=dtime.replace(/日/," ");
+		var dttime=dtime+ttime;
+		$("#datetime").val(dttime);
+		
+		//填写时间戳  获取 日期 时间
+		$("button:first").click(function(){
+			var itime=$("#inputtime").val();
+			var date=dtimesub(itime);
+			var time=ttimesub(itime);
+			var time=date+time;
+			$("#havetime").val(time);
+		})
+		
+		//填写 日期 和时间  获取时间戳
+		$("button:last").click(function(){	
+			var hour=$("#hour").val();
+			var min=$("#min").val();
+			var sec=$("#sec").val();
+			var times=t.setHours(hour,min,sec);
+			var times=""+times+"";
+			var timess=times.substr(0,10); 		
+			var time0=t.setHours(0,0,0);			//当日0点时间戳
+			var time0=""+time0+"";
+			var time0=time0.substr(0,10);		
+			var stime=timess-time0;
+			
+			var year=$("#year").val();
+			var month=$("#month").val()-1;
+			var day=$("#day").val();
+			var timeb=t.setFullYear(year,month,day);
+			var timeb=""+timeb+"";
+			var timeb=timeb.substr(0,10);
+			var time=parseInt(timeb)+parseInt(stime);
+			$("#oktime").val(time);
+		})
+			
+		//获取当前的时间  例如 19:34:22
+		function ttimesub(nS) {     
+			var timee=new Date(parseInt(nS) * 1000).toTimeString();  
+			var timee=""+timee+"";
+			return timee.substr(0,8);
+		}     
+		//获取当前的日期 例如 2013-12-26
+		function dtimesub(nS){
+			var timee=new Date(parseInt(nS) * 1000).toLocaleDateString();  
+			var timee=timee.replace(/年/,"-");
+			var timee=timee.replace(/月/,"-");
+			var timee=timee.replace(/日/," ");
+			return timee;
+		}
+	})
+</script>
+</head>
+<body>
+<p>
+&nbsp;
+</p>
+<div style="margin-left:200px;margin-top:300px;">
+<ul>
+	<li>当前时间戳</li>
+	<li><input style="width:155px" type="text" style="background-color:#F2F4FF;" id="time" value=""/></li>
+</ul>
+<ul>
+	<li>当前时间</li>
+	<li><input style="width:155px" type="text" style="background-color:#F2F4FF" id="datetime" value="<?=$datetime?>"/></li>
+</ul>
+<ul>
+	<li>填写时间戳</li>
+	<li><input id="inputtime" type="text" value=""/></li>
+	<li><button style="width:150px;" id="ok">获取日期和时间</button></li>
+	<li><input type="text" style="background-color:#F2F4FF" id="havetime" value=""/></li>
+</ul>
+<ul>
+	<li>填写日期时间</li>
+	<li class="time">
+		<input style="width:40px" type="text" id="year"  value="">年
+		<input style="width:30px" type="text" id="month" value="">月
+		<input style="width:30px" type="text" id="day" value="">日<br>
+		<input style="width:40px" type="text" id="hour" value="">时
+		<input style="width:30px" type="text" id="min" value="">分
+		<input style="width:30px" type="text" id="sec" value="">秒
+	</li>
+	<li><button style="width:150px;">获取时间戳</button></li>
+	<li><input style="width:155px;" type="text" id="oktime" value=""/></li>
+</ul>
+</div>
+</body>
+</html>
